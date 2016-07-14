@@ -1,26 +1,29 @@
-# BeagleBone Black
+# Next Thing Co. - C.H.I.P.
 
-[![Build Status](https://travis-ci.org/nerves-project/nerves_system_bbb.png?branch=master)](https://travis-ci.org/nerves-project/nerves_system_bbb)
+## THIS IS UNDER ACTIVE DEVELOPMENT AND NOT READY FOR USE
 
-This is the base Nerves System configuration for the [BeagleBone Black](http://beagleboard.org/black).
+[![Build Status](https://travis-ci.org/nerves-project/nerves_system_chip.png?branch=master)](https://travis-ci.org/nerves-project/nerves_system_chip)
 
-![BeagleBone Black image](assets/images/beaglebone-black.png)
+This is the base Nerves System configuration for the [C.H.I.P.](http://getchip.com).
+
+![C.H.I.P. image](assets/images/chip.png)
 <br><sup>[Image credit](#fritzing)</sup>
 
 | Feature              | Description                     |
 | -------------------- | ------------------------------- |
-| CPU                  | 1 GHz ARM Cortex-A8             |
-| Memory               | 512 MB DRAM                      |
-| Storage              | 4 GB eMMC Flash and MicroSD         |
-| Linux kernel         | 4.4.9 w/ BBB patches |
-| IEx terminal         | ttyS0 via FTDI pins |
-| GPIO, I2C, SPI       | Yes - Elixir ALE            |
+| CPU                  | 1 GHz ARM Allwinner R8          |
+| Memory               | 512 MB DRAM                     |
+| Storage              | 4 GB eMMC Flash                 |
+| Linux kernel         | 4.4.9                           |
+| IEx terminal         | ttyS0 via FTDI pins             |
+| GPIO, I2C, SPI       | Yes - Elixir ALE                |
 | ADC                  | Yes                             |
 | PWM                  | Yes, but no Elixir support      |
 | UART                 | ttyS0 + more via device tree overlay  |
 | Camera               | None                            |
-| Ethernet             | Yes    |
-| WiFi                 | Requires USB WiFi dongle        |
+| Ethernet             | No                              |
+| WiFi                 | UNDER DEVELOPMENT               |
+| Bluetooth            | UNDER DEVELOPMENT               |
 
 ## Console access
 
@@ -28,35 +31,9 @@ The console is configured to output to `ttyS0` by default. This is the
 UART output accessible by the 6 pin header labeled J1. A 3.3V FTDI
 cable is needed to access the output.
 
-The HDMI output has been disabled via device tree to free up pins on the
-GPIO header. If you would like console access via HDMI, you will need
-to enable HDMI support in the Linux kernel, remove the HDMI disable
-argument in the uboot script providing kernel arguments, and change
-`erlinit.conf` to output to `tty1`.
-
-## Linux versions
-
-The BeagleBone Black has many options for Linux that vary by
-kernel version and patch set. Nerves tracks those maintained by
-Robert Nelson at https://eewiki.net/display/linuxonarm/BeagleBone+Black.
-His patch sets have `-rt` and `-ti`/`-bone` options. The `-rt` for real-time
-actually refers to `CONFIG_PREEMPT` and a couple other real-time options being
-configured in the Linux kernel. Nerves uses those options as well. Nerves
-follows the `-ti` patch set. See `nerves_system_br/boards/bbb` for the actual
-patches.
-
-Be aware that if you have been using Linux kernel 3.8 on the BeagleBone, that there
-have been device tree overlay and PRU updates. File paths have changed for
-inserting device tree overlays.
-
 ## Device tree overlays
 
-Most pins on the BBB's headers are configurable via the device tree.
-Configuration can be done at runtime via the [Universal I/O](https://github.com/cdsteinkuehler/beaglebone-universal-io)
-device tree overlays. These overlays are included in the kernel configuration
-for Nerves so you do not need to compile that project. Additionally, the
-`config-pin` script is available in `/usr/bin` on the target. It has
-minor modifications to run on Nerves.
+TODO
 
 ### Universal I/O
 
@@ -101,34 +78,20 @@ iex(demo@nerves-0099)> File.read("/sys/bus/iio/devices/iio:device0/in_voltage0_r
 
 ## Supported USB WiFi devices
 
-The base image includes drivers and firmware for Ralink RT53xx
-(`rt2800usb` driver) and RealTek RTL8712U (`r8712u` driver) devices.
-
-We are still working out which subset of all possible WiFi dongles to
-support in our images. At some point, we may have the option to support
-all dongles and selectively install modules at packaging time, but until
-then, these drivers and their associated firmware blobs add significantly
-to Nerves release images.
-
-If you are unsure what driver your WiFi dongle requires, run Raspbian and configure WiFi
-for your device. At a shell prompt, run `lsmod` to see which drivers are loaded.
-Running `dmesg` may also give a clue. When using `dmesg`, reinsert the USB
-dongle to generate new log messages if you don't see them.
-
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
-  1. Add nerves_system_bbb to your list of dependencies in `mix.exs`:
+  1. Add nerves_system_chip to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:nerves_system_bbb, "~> 0.4.0"}]
+          [{:nerves_system_chip, "~> 0.1.0"}]
         end
 
-  2. Ensure nerves_system_bbb is started before your application:
+  2. Ensure nerves_system_chip is started before your application:
 
         def application do
-          [applications: [:nerves_system_bbb]]
+          [applications: [:nerves_system_chip]]
         end
 
 
